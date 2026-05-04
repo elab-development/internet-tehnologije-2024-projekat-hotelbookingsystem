@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Admin;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
@@ -16,13 +17,13 @@ class AdminSeeder extends Seeder
         Admin::create(
             [
             'username'=>"Admin",
-            'password'=>"Admin123",
+            'password'=>Hash::make("Admin123"),
              ]);
 
         Admin::create(
             [
             'username'=>"Admin2",
-            'password'=>"Admin321",
+            'password'=>Hash::make("Admin321"),
             ]);
     }
 }

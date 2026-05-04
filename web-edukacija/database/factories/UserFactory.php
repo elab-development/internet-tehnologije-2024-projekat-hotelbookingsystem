@@ -23,11 +23,19 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        // Role distribution: 85% user, 12% manager, 3% admin
+        $roleRandom = fake()->numberBetween(1, 100);
+        $role = $roleRandom <= 85 ? 'user' : ($roleRandom <= 97 ? 'manager' : 'admin');
+
         return [
-            'name' => fake()->name(),
+            'name' => fake()->firstName(),
+            'surname' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'document_number' => fake()->optional(0.7)->unique()->numerify('##########'),
+            'phone_number' => fake()->optional(0.8)->phoneNumber(),
+            'role' => $role,
             'remember_token' => Str::random(10),
         ];
     }
