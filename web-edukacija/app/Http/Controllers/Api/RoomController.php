@@ -84,6 +84,15 @@ class RoomController extends Controller
     }
 
     /**
+     * Display available rooms.
+     */
+    public function available(): JsonResponse
+    {
+        $availableRooms = Room::where('status', 'available')->get();
+        return response()->json(RoomResource::collection($availableRooms));
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Room $room): JsonResponse

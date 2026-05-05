@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
@@ -72,6 +73,15 @@ class ReservationController extends Controller
 
         $reservation->update($validated);
         return response()->json(new ReservationResource($reservation));
+    }
+
+    /**
+     * Display reservations for the specified user.
+     */
+    public function userReservations(User $user): JsonResponse
+    {
+        $reservations = $user->reservations;
+        return response()->json(ReservationResource::collection($reservations));
     }
 
     /**

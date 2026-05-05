@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HotelResource;
+use App\Http\Resources\RoomResource;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -61,6 +62,15 @@ class HotelController extends Controller
 
         $hotel->update($validated);
         return response()->json(new HotelResource($hotel));
+    }
+
+    /**
+     * Display rooms for the specified hotel.
+     */
+    public function rooms(Hotel $hotel): JsonResponse
+    {
+        $rooms = $hotel->rooms;
+        return response()->json(RoomResource::collection($rooms));
     }
 
     /**
