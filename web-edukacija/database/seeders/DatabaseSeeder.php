@@ -13,6 +13,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(AdminSeeder::class);
+        // Create users first (8 total)
+        User::factory(8)->create();
+        
+        // Then seed in dependency order
+        $this->call([
+            HotelSeeder::class,
+            RoomTypeSeeder::class,
+            RoomSeeder::class,
+            ReservationSeeder::class,
+            PaymentSeeder::class,
+            AdminSeeder::class,
+        ]);
     }
 }

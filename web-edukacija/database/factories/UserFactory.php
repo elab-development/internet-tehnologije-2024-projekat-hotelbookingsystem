@@ -33,7 +33,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'document_number' => fake()->optional(0.7)->unique()->numerify('##########'),
+            'document_number' => fake()->unique()->numerify('##########'),
             'phone_number' => fake()->optional(0.8)->phoneNumber(),
             'role' => $role,
             'remember_token' => Str::random(10),
