@@ -13,10 +13,26 @@ class RoomTypeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(Request $request)
     {
-        $roomTypes = RoomType::all();
-        return response()->json(RoomTypeResource::collection($roomTypes));
+        $perPage = min(50, max(1, (int) $request->get('per_page', 10)));
+        
+        $query = RoomType::query();
+
+        if ($request->filled('capacity')) {
+            $query->where('capacity', $request->get('capacity'));
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price_per_night', '>=', $request->get('min_price'));
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price_per_night', '<=', $request->get('max_price'));
+        }
+
+        $roomTypes = $query->paginate($perPage);
+        return RoomTypeResource::collection($roomTypes);
     }
 
     /**

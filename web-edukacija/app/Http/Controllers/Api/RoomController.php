@@ -14,16 +14,26 @@ class RoomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
+        $perPage = min(50, max(1, (int) $request->get('per_page', 10)));
+        
         $query = Room::query();
 
-        if ($request->has('hotel_id')) {
-            $query->where('hotel_id', $request->hotel_id);
+        if ($request->filled('hotel_id')) {
+            $query->where('hotel_id', $request->get('hotel_id'));
         }
 
-        $rooms = $query->get();
-        return response()->json(RoomResource::collection($rooms));
+        if ($request->filled('room_type_id')) {
+            $query->where('room_type_id', $request->get('room_type_id'));
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->get('status'));
+        }
+
+        $rooms = $query->paginate($perPage);
+        return RoomResource::collection($rooms);
     }
 
     /**

@@ -14,10 +14,22 @@ class HotelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(Request $request)
     {
-        $hotels = Hotel::all();
-        return response()->json(HotelResource::collection($hotels));
+        $perPage = min(50, max(1, (int) $request->get('per_page', 10)));
+        
+        $query = Hotel::query();
+
+        if ($request->filled('city')) {
+            $query->where('city', 'like', '%' . $request->get('city') . '%');
+        }
+
+        if ($request->filled('country')) {
+            $query->where('country', 'like', '%' . $request->get('country') . '%');
+        }
+
+        $hotels = $query->paginate($perPage);
+        return HotelResource::collection($hotels);
     }
 
     /**

@@ -14,16 +14,26 @@ class PaymentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
+        $perPage = min(50, max(1, (int) $request->get('per_page', 10)));
+        
         $query = Payment::query();
 
-        if ($request->has('reservation_id')) {
-            $query->where('reservation_id', $request->reservation_id);
+        if ($request->filled('reservation_id')) {
+            $query->where('reservation_id', $request->get('reservation_id'));
         }
 
-        $payments = $query->get();
-        return response()->json(PaymentResource::collection($payments));
+        if ($request->filled('payment_method')) {
+            $query->where('payment_method', $request->get('payment_method'));
+        }
+
+        if ($request->filled('payment_status')) {
+            $query->where('payment_status', $request->get('payment_status'));
+        }
+
+        $payments = $query->paginate($perPage);
+        return PaymentResource::collection($payments);
     }
 
     /**

@@ -15,16 +15,26 @@ class ReservationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
+        $perPage = min(50, max(1, (int) $request->get('per_page', 10)));
+        
         $query = Reservation::query();
 
-        if ($request->has('user_id')) {
-            $query->where('user_id', $request->user_id);
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->get('user_id'));
         }
 
-        $reservations = $query->get();
-        return response()->json(ReservationResource::collection($reservations));
+        if ($request->filled('room_id')) {
+            $query->where('room_id', $request->get('room_id'));
+        }
+
+        if ($request->filled('reservation_status')) {
+            $query->where('reservation_status', $request->get('reservation_status'));
+        }
+
+        $reservations = $query->paginate($perPage);
+        return ReservationResource::collection($reservations);
     }
 
     /**
