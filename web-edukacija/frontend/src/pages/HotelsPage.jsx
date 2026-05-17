@@ -46,17 +46,21 @@ function HotelsPage() {
 
       {!loading && !error && (
         <>
-          <div className="grid">
-            {hotels.map(hotel => (
-              <Card key={hotel.id} title={hotel.hotel_name}>
-                <p><strong>Address:</strong> {hotel.address}</p>
-                <p><strong>City:</strong> {hotel.city}</p>
-                <p><strong>Country:</strong> {hotel.country}</p>
-                <p><strong>Email:</strong> {hotel.email}</p>
-                <p><strong>Phone:</strong> {hotel.phone_number}</p>
-              </Card>
-            ))}
-          </div>
+          {hotels.length === 0 ? (
+            <div className="empty-state">No hotels found.</div>
+          ) : (
+            <div className="grid">
+              {hotels.map(hotel => (
+                <Card key={hotel.id} title={hotel.hotel_name}>
+                  <p><strong>Address:</strong> {hotel.address}</p>
+                  <p><strong>City:</strong> {hotel.city}</p>
+                  <p><strong>Country:</strong> {hotel.country}</p>
+                  <p><strong>Email:</strong> {hotel.email}</p>
+                  <p><strong>Phone:</strong> {hotel.phone_number}</p>
+                </Card>
+              ))}
+            </div>
+          )}
 
           <div className="pagination">
             <button

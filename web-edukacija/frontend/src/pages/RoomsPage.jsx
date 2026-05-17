@@ -101,17 +101,21 @@ function RoomsPage() {
       )}
 
       {!loading && !error && (
-        <div className="grid">
-          {filteredRooms.map(room => (
-            <Card key={room.id} title={`Room ${room.room_number}`}>
-              <p><strong>Hotel ID:</strong> {room.hotel_id}</p>
-              <p><strong>Room Type:</strong> {room.room_type_id}</p>
-              <p><strong>Floor:</strong> {room.floor_number}</p>
-              <p><strong>Status:</strong> {room.status}</p>
-              <Button onClick={() => handleReserveRoom(room)}>Reserve Room</Button>
-            </Card>
-          ))}
-        </div>
+        filteredRooms.length === 0 ? (
+          <div className="empty-state">No rooms found for the selected filter.</div>
+        ) : (
+          <div className="grid">
+            {filteredRooms.map(room => (
+              <Card key={room.id} title={`Room ${room.room_number}`}>
+                <p><strong>Hotel ID:</strong> {room.hotel_id}</p>
+                <p><strong>Room Type:</strong> {room.room_type_id}</p>
+                <p><strong>Floor:</strong> {room.floor_number}</p>
+                <p><strong>Status:</strong> {room.status}</p>
+                <Button onClick={() => handleReserveRoom(room)}>Reserve Room</Button>
+              </Card>
+            ))}
+          </div>
+        )
       )}
 
       {showReservationForm && selectedRoom && (
