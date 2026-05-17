@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header.jsx'
+import Breadcrumbs from './components/Breadcrumbs.jsx'
 import HomePage from './pages/HomePage.jsx'
 import HotelsPage from './pages/HotelsPage.jsx'
 import RoomsPage from './pages/RoomsPage.jsx'
@@ -10,6 +11,7 @@ function App() {
     <div className="App">
       <Header />
       <main className="container page">
+        <Breadcrumbs />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/hotels" element={<HotelsPage />} />
