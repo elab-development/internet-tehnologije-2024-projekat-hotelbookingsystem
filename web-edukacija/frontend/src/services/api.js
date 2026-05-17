@@ -1,13 +1,13 @@
 const API_BASE_URL = 'http://127.0.0.1:8000/api'
 
-export async function getHotels() {
+export async function getHotels(page = 1, perPage = 10) {
   try {
-    const response = await fetch(`${API_BASE_URL}/hotels`)
+    const response = await fetch(`${API_BASE_URL}/hotels?page=${page}&per_page=${perPage}`)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const data = await response.json()
-    return data.data || data
+    return data
   } catch (error) {
     console.error('Error fetching hotels:', error)
     throw error

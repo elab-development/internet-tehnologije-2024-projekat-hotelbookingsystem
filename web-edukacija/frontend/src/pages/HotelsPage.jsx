@@ -6,14 +6,18 @@ function HotelsPage() {
   const [hotels, setHotels] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [lastPage, setLastPage] = useState(1)
+  const perPage = 2
 
   useEffect(() => {
     const fetchHotels = async () => {
       try {
         setLoading(true)
         setError(null)
-        const data = await getHotels()
-        setHotels(data)
+        const response = await getHotels(currentPage, perPage)
+        setHotels(response.data || [])
+        setLastPage(response.last_page || 1)
       } catch (err) {
         setError('Failed to load hotels. Please try again later.')
         console.error(err)
@@ -23,7 +27,7 @@ function HotelsPage() {
     }
 
     fetchHotels()
-  }, [])
+  }, [currentPage])
 
   return (
     <div>
@@ -41,17 +45,37 @@ function HotelsPage() {
       )}
 
       {!loading && !error && (
-        <div className="grid">
-          {hotels.map(hotel => (
-            <Card key={hotel.id} title={hotel.hotel_name}>
-              <p><strong>Address:</strong> {hotel.address}</p>
-              <p><strong>City:</strong> {hotel.city}</p>
-              <p><strong>Country:</strong> {hotel.country}</p>
-              <p><strong>Email:</strong> {hotel.email}</p>
-              <p><strong>Phone:</strong> {hotel.phone_number}</p>
-            </Card>
-          ))}
-        </div>
+        <>
+          <div className="grid">
+            {hotels.map(hotel => (
+              <Card key={hotel.id} title={hotel.hotel_name}>
+                <p><strong>Address:</strong> {hotel.address}</p>
+                <p><strong>City:</strong> {hotel.city}</p>
+                <p><strong>Country:</strong> {hotel.country}</p>
+                <p><strong>Email:</strong> {hotel.email}</p>
+                <p><strong>Phone:</strong> {hotel.phone_number}</p>
+              </Card>
+            ))}
+          </div>
+
+          <div className="pagination">
+            <button
+              className="btn btn-secondary"
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span>Page {currentPage} of {lastPage}</span>
+            <button
+              className="btn"
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage === lastPage}
+            >
+              Next
+            </button>
+          </div>
+        </>
       )}
     </div>
   )

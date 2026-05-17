@@ -226,6 +226,13 @@ body {
   gap: 2rem;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
 @media (max-width: 640px) {
   .container {
     padding: 1.25rem;
