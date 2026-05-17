@@ -87,11 +87,11 @@ body {
 
 .card {
   background: #fff;
-  border-radius: 12px;
-  padding: 1.75rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border-radius: 16px;
+  padding: 1.9rem;
+  box-shadow: 0 8px 22px rgba(74, 74, 74, 0.08);
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(232, 180, 184, 0.2);
+  border: 1px solid rgba(232, 180, 184, 0.28);
 }
 
 .card-title {
@@ -107,7 +107,7 @@ body {
 }
 
 .btn {
-  background-color: var(--primary-pink);
+  background: linear-gradient(135deg, var(--primary-pink), var(--primary-lavender));
   color: #fff;
   border: none;
   padding: 0.85rem 1.75rem;
@@ -121,9 +121,8 @@ body {
 }
 
 .btn:hover {
-  background-color: #d4999e;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(232, 180, 184, 0.4);
+  box-shadow: 0 6px 16px rgba(232, 180, 184, 0.45);
 }
 
 .btn-secondary {
