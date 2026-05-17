@@ -1,38 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Card from '../components/Card'
 import Button from '../components/Button'
-
-const placeholderRooms = [
-  {
-    id: 1,
-    room_number: '101',
-    hotel_id: 1,
-    room_type: 'Standard',
-    floor_number: 1,
-    status: 'available',
-  },
-  {
-    id: 2,
-    room_number: '204',
-    hotel_id: 1,
-    room_type: 'Deluxe',
-    floor_number: 2,
-    status: 'occupied',
-  },
-  {
-    id: 3,
-    room_number: '305',
-    hotel_id: 2,
-    room_type: 'Suite',
-    floor_number: 3,
-    status: 'maintenance',
-  },
-]
+import { getRooms } from '../services/api'
 
 function RoomsPage() {
+  const [rooms, setRooms] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [filter, setFilter] = useState('available')
 
-  const filteredRooms = placeholderRooms.filter(
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        const data = await getRooms()
+        setRooms(data)
+      } catch (err) {
+        setError('Failed to load rooms. Please try again later.')
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchRooms()
+  }, [])
+
+  const filteredRooms = rooms.filter(
     room => filter === 'all' || room.status === filter
   )
 
@@ -40,7 +35,7 @@ function RoomsPage() {
     <div>
       <h1 className="page-title">Rooms</h1>
       <p className="page-description">
-        Browse rooms and filter them by status. API integration will be added in the next step.
+        Browse rooms and filter them by status.
       </p>
 
       <div className="form-group">
@@ -58,17 +53,27 @@ function RoomsPage() {
         </select>
       </div>
 
-      <div className="grid">
-        {filteredRooms.map(room => (
-          <Card key={room.id} title={`Room ${room.room_number}`}>
-            <p><strong>Hotel ID:</strong> {room.hotel_id}</p>
-            <p><strong>Room Type:</strong> {room.room_type}</p>
-            <p><strong>Floor:</strong> {room.floor_number}</p>
-            <p><strong>Status:</strong> {room.status}</p>
-            <Button>Reserve Room</Button>
-          </Card>
-        ))}
-      </div>
+      {loading && (
+        <div className="loading">Loading rooms...</div>
+      )}
+
+      {error && (
+        <div className="error">{error}</div>
+      )}
+
+      {!loading && !error && (
+        <div className="grid">
+          {filteredRooms.map(room => (
+            <Card key={room.id} title={`Room ${room.room_number}`}>
+              <p><strong>Hotel ID:</strong> {room.hotel_id}</p>
+              <p><strong>Room Type:</strong> {room.room_type_id}</p>
+              <p><strong>Floor:</strong> {room.floor_number}</p>
+              <p><strong>Status:</strong> {room.status}</p>
+              <Button>Reserve Room</Button>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

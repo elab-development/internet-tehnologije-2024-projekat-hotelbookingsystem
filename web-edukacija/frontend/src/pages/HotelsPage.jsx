@@ -1,38 +1,58 @@
+import { useState, useEffect } from 'react'
 import Card from '../components/Card'
+import { getHotels } from '../services/api'
 
 function HotelsPage() {
+  const [hotels, setHotels] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchHotels = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        const data = await getHotels()
+        setHotels(data)
+      } catch (err) {
+        setError('Failed to load hotels. Please try again later.')
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchHotels()
+  }, [])
+
   return (
     <div>
       <h1 className="page-title">Hotels</h1>
       <p className="page-description">
-        Browse hotels available in the Hotel Booking System. API integration will be added in the next step.
+        Browse hotels available in the Hotel Booking System.
       </p>
 
-      <div className="grid">
-        <Card title="Grand Plaza Hotel">
-          <p><strong>Address:</strong> 123 Main Street</p>
-          <p><strong>City:</strong> New York</p>
-          <p><strong>Country:</strong> United States</p>
-          <p><strong>Email:</strong> info@grandplaza.com</p>
-          <p><strong>Phone:</strong> +1-555-0101</p>
-        </Card>
+      {loading && (
+        <div className="loading">Loading hotels...</div>
+      )}
 
-        <Card title="Seaside Resort & Spa">
-          <p><strong>Address:</strong> 45 Beach Road</p>
-          <p><strong>City:</strong> Split</p>
-          <p><strong>Country:</strong> Croatia</p>
-          <p><strong>Email:</strong> info@seaside.com</p>
-          <p><strong>Phone:</strong> +385-555-0202</p>
-        </Card>
+      {error && (
+        <div className="error">{error}</div>
+      )}
 
-        <Card title="Mountain View Lodge">
-          <p><strong>Address:</strong> 12 Mountain Street</p>
-          <p><strong>City:</strong> Kopaonik</p>
-          <p><strong>Country:</strong> Serbia</p>
-          <p><strong>Email:</strong> info@mountainview.com</p>
-          <p><strong>Phone:</strong> +381-555-0303</p>
-        </Card>
-      </div>
+      {!loading && !error && (
+        <div className="grid">
+          {hotels.map(hotel => (
+            <Card key={hotel.id} title={hotel.hotel_name}>
+              <p><strong>Address:</strong> {hotel.address}</p>
+              <p><strong>City:</strong> {hotel.city}</p>
+              <p><strong>Country:</strong> {hotel.country}</p>
+              <p><strong>Email:</strong> {hotel.email}</p>
+              <p><strong>Phone:</strong> {hotel.phone_number}</p>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
