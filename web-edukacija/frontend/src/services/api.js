@@ -27,3 +27,63 @@ export async function getRooms() {
     throw error
   }
 }
+
+export async function registerUser(userData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    })
+    const data = await response.json()
+    if (!response.ok) {
+      throw new Error(data.message || 'Registration failed')
+    }
+    return data
+  } catch (error) {
+    console.error('Error registering user:', error)
+    throw error
+  }
+}
+
+export async function loginUser(credentials) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    })
+    const data = await response.json()
+    if (!response.ok) {
+      throw new Error(data.message || 'Login failed')
+    }
+    return data
+  } catch (error) {
+    console.error('Error logging in:', error)
+    throw error
+  }
+}
+
+export async function logoutUser(token) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Error logging out:', error)
+    throw error
+  }
+}

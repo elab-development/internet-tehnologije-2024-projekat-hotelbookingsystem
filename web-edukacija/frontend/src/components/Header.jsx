@@ -1,6 +1,27 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useAuth } from '../hooks/useAuth'
 
 function Header() {
+  const { isAuthenticated, getUser, logout } = useAuth()
+  const navigate = useNavigate()
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  const user = getUser()
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true)
+    try {
+      await logout()
+      navigate('/auth')
+    } catch (error) {
+      console.error('Logout error:', error)
+      navigate('/auth')
+    } finally {
+      setIsLoggingOut(false)
+    }
+  }
+
   return (
     <nav className="nav">
       <Link to="/" className="nav-brand">
@@ -17,9 +38,35 @@ function Header() {
         <li>
           <Link to="/rooms" className="nav-link">Rooms</Link>
         </li>
-        <li>
-          <Link to="/auth" className="nav-link">Login/Register</Link>
-        </li>
+        
+        {!isAuthenticated() ? (
+          <li>
+            <Link to="/auth" className="nav-link">Login/Register</Link>
+          </li>
+        ) : (
+          <>
+            <li>
+              <span className="nav-link" style={{ cursor: 'default' }}>
+                {user?.email || user?.name || 'User'}
+              </span>
+            </li>
+            <li>
+              <button 
+                className="nav-link" 
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  cursor: isLoggingOut ? 'not-allowed' : 'pointer',
+                  opacity: isLoggingOut ? 0.6 : 1
+                }}
+              >
+                {isLoggingOut ? 'Logging out...' : 'Logout'}
+              </button>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   )
