@@ -139,18 +139,20 @@ body {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   font-size: 1rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.5rem;
   transition: all 0.3s ease;
+  background-color: #fffdfd;
 }
 
 .form-input:focus {
   outline: none;
   border-color: var(--primary-pink);
-  box-shadow: 0 0 0 3px rgba(232, 180, 184, 0.2);
+  box-shadow: 0 0 0 4px rgba(232, 180, 184, 0.18);
 }
 
 .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.35rem;
+  max-width: 520px;
 }
 
 .form-label {
@@ -206,4 +208,18 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1.25rem;
+  }
+
+  .page {
+    padding: 1.5rem 0;
+  }
+
+  .form-group {
+    max-width: 100%;
+  }
 }
