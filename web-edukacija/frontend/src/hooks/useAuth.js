@@ -14,6 +14,22 @@ export function useAuth() {
     return !!getToken()
   }
 
+  const userRole = () => {
+    return getUser()?.role || null
+  }
+
+  const isAdmin = () => {
+    return userRole() === 'admin'
+  }
+
+  const isManager = () => {
+    return userRole() === 'manager'
+  }
+
+  const isUser = () => {
+    return userRole() === 'user'
+  }
+
   const login = async (credentials) => {
     try {
       const response = await loginUser(credentials)
@@ -45,6 +61,10 @@ export function useAuth() {
     getToken,
     getUser,
     isAuthenticated,
+    userRole,
+    isAdmin,
+    isManager,
+    isUser,
     login,
     logout,
   }
