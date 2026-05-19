@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
 
 function Header() {
-  const { isAuthenticated, getUser, logout } = useAuth()
+  const { isAuthenticated, getUser, userRole, isAdmin, isManager, isUser, logout } = useAuth()
   const navigate = useNavigate()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
@@ -45,9 +45,29 @@ function Header() {
           </li>
         ) : (
           <>
+            {isAdmin() && (
+              <li>
+                <a href="#" className="nav-link">Admin Panel</a>
+              </li>
+            )}
+            {isManager() && (
+              <li>
+                <a href="#" className="nav-link">Manager Panel</a>
+              </li>
+            )}
+            {isUser() && (
+              <li>
+                <a href="#" className="nav-link">My Reservations</a>
+              </li>
+            )}
             <li>
               <span className="nav-link" style={{ cursor: 'default' }}>
                 {user?.email || user?.name || 'User'}
+              </span>
+            </li>
+            <li>
+              <span className="nav-link" style={{ cursor: 'default' }}>
+                Role: {userRole()}
               </span>
             </li>
             <li>
