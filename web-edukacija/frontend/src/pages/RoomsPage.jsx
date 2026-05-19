@@ -9,6 +9,8 @@ function RoomsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [filter, setFilter] = useState('available')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [sortOption, setSortOption] = useState('room_asc')
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [showReservationForm, setShowReservationForm] = useState(false)
   const [reservationMessage, setReservationMessage] = useState(null)
@@ -37,9 +39,22 @@ function RoomsPage() {
     fetchRooms()
   }, [])
 
-  const filteredRooms = rooms.filter(
-    room => filter === 'all' || room.status === filter
-  )
+  const filteredRooms = [...rooms]
+    .filter(room => filter === 'all' || room.status === filter)
+    .filter(room =>
+      String(room.room_number).toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortOption === 'room_desc') {
+        return String(b.room_number).localeCompare(String(a.room_number))
+      }
+
+      if (sortOption === 'status_az') {
+        return String(a.status).localeCompare(String(b.status))
+      }
+
+      return String(a.room_number).localeCompare(String(b.room_number))
+    })
 
   const handleReserveRoom = (room) => {
     setSelectedRoom(room)
@@ -77,6 +92,26 @@ function RoomsPage() {
         Browse rooms and filter them by status.
       </p>
 
+      <div className="room-controls">
+        <input
+          className="form-input"
+          type="text"
+          placeholder="Search by room number"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+        <select
+          className="form-input"
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+        >
+          <option value="room_asc">Room Number Ascending</option>
+          <option value="room_desc">Room Number Descending</option>
+          <option value="status_az">Status A-Z</option>
+        </select>
+      </div>
+
       <div className="form-group">
         <label className="form-label">Filter by Status:</label>
         <select
@@ -102,7 +137,7 @@ function RoomsPage() {
 
       {!loading && !error && (
         filteredRooms.length === 0 ? (
-          <div className="empty-state">No rooms found for the selected filter.</div>
+          <div className="empty-state">No rooms match your filters.</div>
         ) : (
           <div className="grid">
             {filteredRooms.map(room => (

@@ -253,6 +253,11 @@ body {
   margin-bottom: 1.5rem;
 }
 
+.room-controls {
+  max-width: 520px;
+  margin-bottom: 1rem;
+}
+
 @media (max-width: 640px) {
   .container {
     padding: 1.25rem;
