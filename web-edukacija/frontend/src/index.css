@@ -243,6 +243,11 @@ body {
   padding: 1.5rem 0;
 }
 
+.weather-info {
+  color: var(--text-light);
+  margin-top: 1rem;
+}
+
 @media (max-width: 640px) {
   .container {
     padding: 1.25rem;
