@@ -3,6 +3,7 @@ import Card from '../components/Card'
 import Button from '../components/Button'
 import FormInput from '../components/FormInput'
 import { getRooms } from '../services/api'
+import { exportToCsv } from '../utils/csvExport'
 
 function RoomsPage() {
   const [rooms, setRooms] = useState([])
@@ -11,6 +12,7 @@ function RoomsPage() {
   const [filter, setFilter] = useState('available')
   const [searchTerm, setSearchTerm] = useState('')
   const [sortOption, setSortOption] = useState('room_asc')
+  const [exportMessage, setExportMessage] = useState('')
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [showReservationForm, setShowReservationForm] = useState(false)
   const [reservationMessage, setReservationMessage] = useState(null)
@@ -85,6 +87,25 @@ function RoomsPage() {
     setReservationMessage(null)
   }
 
+  const handleExportRooms = () => {
+    if (filteredRooms.length === 0) {
+      setExportMessage('No rooms available for export.')
+      return
+    }
+
+    const rows = filteredRooms.map(room => ({
+      id: room.id,
+      room_number: room.room_number,
+      hotel_id: room.hotel_id,
+      room_type_id: room.room_type_id,
+      floor_number: room.floor_number,
+      status: room.status,
+    }))
+
+    setExportMessage('')
+    exportToCsv('rooms.csv', rows)
+  }
+
   return (
     <div>
       <h1 className="page-title">Rooms</h1>
@@ -125,6 +146,15 @@ function RoomsPage() {
           <option value="maintenance">Maintenance</option>
           <option value="cleaning">Cleaning</option>
         </select>
+      </div>
+
+      <div className="export-controls">
+        <button className="btn btn-secondary" onClick={handleExportRooms}>
+          Export Rooms CSV
+        </button>
+        {exportMessage && (
+          <p className="empty-state">{exportMessage}</p>
+        )}
       </div>
 
       {loading && (
