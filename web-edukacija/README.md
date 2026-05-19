@@ -27,6 +27,28 @@ Hotel Booking System is a seminar project with a Laravel backend and React front
 - **Manager:** Can access `/manager` and view a reservations overview.
 - **Admin:** Can access `/admin` and view a hotels overview.
 
+## API Overview
+
+The Laravel API includes resource groups for authentication, hotels, rooms, reservations and payments.
+
+Example routes:
+
+- `POST /api/login`
+- `POST /api/register`
+- `GET /api/hotels`
+- `GET /api/rooms`
+- `GET /api/reservations`
+
+Modifying routes are protected with Sanctum authentication.
+
+## Project Structure
+
+- **`frontend/`:** React + Vite frontend application.
+- **Laravel backend app:** Models, migrations, controllers and API routes.
+- **Seeders:** Demo data for users, hotels, rooms, reservations and payments.
+- **API controllers:** Handle API requests for backend resources.
+- **React pages/components/hooks/services:** Frontend screens, reusable UI, auth helpers and API functions.
+
 ## Backend setup
 
 ```bash
@@ -54,3 +76,5 @@ npm run dev
 
 - **Email:** manager@gmail.com
 - **Password:** manager123
+
+This project was developed as a seminar project for Internet Technologies.
