@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage.jsx'
 import HotelsPage from './pages/HotelsPage.jsx'
 import RoomsPage from './pages/RoomsPage.jsx'
 import AuthPage from './pages/AuthPage.jsx'
+import AdminPage from './pages/AdminPage.jsx'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/hotels" element={<HotelsPage />} />
           <Route path="/rooms" element={<RoomsPage />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </main>
     </div>

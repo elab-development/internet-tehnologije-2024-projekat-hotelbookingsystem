@@ -47,7 +47,7 @@ function Header() {
           <>
             {isAdmin() && (
               <li>
-                <a href="#" className="nav-link">Admin Panel</a>
+                <Link to="/admin" className="nav-link">Admin Panel</Link>
               </li>
             )}
             {isManager() && (
