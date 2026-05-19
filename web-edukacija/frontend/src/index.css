@@ -238,6 +238,11 @@ body {
   padding: 1.5rem 0;
 }
 
+.access-denied {
+  color: #d32f2f;
+  padding: 1.5rem 0;
+}
+
 @media (max-width: 640px) {
   .container {
     padding: 1.25rem;
