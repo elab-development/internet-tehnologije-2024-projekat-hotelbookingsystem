@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Card from '../components/Card'
 import { getHotels } from '../services/api'
 import { getWeatherByCity } from '../services/weatherApi'
+import { exportToCsv } from '../utils/csvExport'
 
 function HotelsPage() {
   const [hotels, setHotels] = useState([])
@@ -13,6 +14,7 @@ function HotelsPage() {
   const [weatherLoading, setWeatherLoading] = useState(null)
   const [weatherError, setWeatherError] = useState({})
   const [searchTerm, setSearchTerm] = useState('')
+  const [exportMessage, setExportMessage] = useState('')
   const perPage = 2
 
   const filteredHotels = hotels.filter(hotel => {
@@ -23,6 +25,10 @@ function HotelsPage() {
       hotel.country?.toLowerCase().includes(search)
     )
   })
+
+  const getHotelPhone = (hotel) => {
+    return hotel.phone_number || hotel.phone || hotel.phoneNumber || ''
+  }
 
   useEffect(() => {
     const fetchHotels = async () => {
@@ -57,6 +63,26 @@ function HotelsPage() {
     }
   }
 
+  const handleExportHotels = () => {
+    if (filteredHotels.length === 0) {
+      setExportMessage('No hotels available for export.')
+      return
+    }
+
+    const rows = filteredHotels.map(hotel => ({
+      id: hotel.id,
+      hotel_name: hotel.hotel_name,
+      city: hotel.city,
+      country: hotel.country,
+      address: hotel.address,
+      email: hotel.email,
+      phone_number: getHotelPhone(hotel),
+    }))
+
+    setExportMessage('')
+    exportToCsv('hotels.csv', rows)
+  }
+
   return (
     <div>
       <h1 className="page-title">Hotels</h1>
@@ -71,6 +97,15 @@ function HotelsPage() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+
+      <div className="export-controls">
+        <button className="btn btn-secondary" onClick={handleExportHotels}>
+          Export Hotels CSV
+        </button>
+        {exportMessage && (
+          <p className="empty-state">{exportMessage}</p>
+        )}
+      </div>
 
       {loading && (
         <div className="loading">Loading hotels...</div>
@@ -94,7 +129,7 @@ function HotelsPage() {
                   <p><strong>City:</strong> {hotel.city}</p>
                   <p><strong>Country:</strong> {hotel.country}</p>
                   <p><strong>Email:</strong> {hotel.email}</p>
-                  <p><strong>Phone:</strong> {hotel.phone_number}</p>
+                  <p><strong>Phone:</strong> {getHotelPhone(hotel)}</p>
                   <button className="btn" onClick={() => handleShowWeather(hotel)}>
                     Show Weather
                   </button>

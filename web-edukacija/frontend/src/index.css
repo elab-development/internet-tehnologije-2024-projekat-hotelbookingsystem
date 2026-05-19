@@ -258,6 +258,10 @@ body {
   margin-bottom: 1rem;
 }
 
+.export-controls {
+  margin-bottom: 1.5rem;
+}
+
 @media (max-width: 640px) {
   .container {
     padding: 1.25rem;
