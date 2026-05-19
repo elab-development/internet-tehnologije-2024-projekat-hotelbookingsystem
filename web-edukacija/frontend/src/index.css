@@ -248,6 +248,11 @@ body {
   margin-top: 1rem;
 }
 
+.search-input {
+  max-width: 520px;
+  margin-bottom: 1.5rem;
+}
+
 @media (max-width: 640px) {
   .container {
     padding: 1.25rem;

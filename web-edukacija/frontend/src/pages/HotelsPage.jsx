@@ -12,7 +12,17 @@ function HotelsPage() {
   const [weatherData, setWeatherData] = useState({})
   const [weatherLoading, setWeatherLoading] = useState(null)
   const [weatherError, setWeatherError] = useState({})
+  const [searchTerm, setSearchTerm] = useState('')
   const perPage = 2
+
+  const filteredHotels = hotels.filter(hotel => {
+    const search = searchTerm.toLowerCase()
+    return (
+      hotel.hotel_name?.toLowerCase().includes(search) ||
+      hotel.city?.toLowerCase().includes(search) ||
+      hotel.country?.toLowerCase().includes(search)
+    )
+  })
 
   useEffect(() => {
     const fetchHotels = async () => {
@@ -54,6 +64,14 @@ function HotelsPage() {
         Browse hotels available in the Hotel Booking System.
       </p>
 
+      <input
+        className="form-input search-input"
+        type="text"
+        placeholder="Search hotels by name, city or country"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+
       {loading && (
         <div className="loading">Loading hotels...</div>
       )}
@@ -66,9 +84,11 @@ function HotelsPage() {
         <>
           {hotels.length === 0 ? (
             <div className="empty-state">No hotels found.</div>
+          ) : filteredHotels.length === 0 ? (
+            <div className="empty-state">No hotels match your search.</div>
           ) : (
             <div className="grid">
-              {hotels.map(hotel => (
+              {filteredHotels.map(hotel => (
                 <Card key={hotel.id} title={hotel.hotel_name}>
                   <p><strong>Address:</strong> {hotel.address}</p>
                   <p><strong>City:</strong> {hotel.city}</p>
