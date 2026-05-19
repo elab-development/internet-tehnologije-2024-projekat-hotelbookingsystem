@@ -6,6 +6,7 @@ import HotelsPage from './pages/HotelsPage.jsx'
 import RoomsPage from './pages/RoomsPage.jsx'
 import AuthPage from './pages/AuthPage.jsx'
 import AdminPage from './pages/AdminPage.jsx'
+import ManagerPage from './pages/ManagerPage.jsx'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/rooms" element={<RoomsPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/manager" element={<ManagerPage />} />
         </Routes>
       </main>
     </div>

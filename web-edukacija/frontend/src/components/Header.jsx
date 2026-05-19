@@ -52,7 +52,7 @@ function Header() {
             )}
             {isManager() && (
               <li>
-                <a href="#" className="nav-link">Manager Panel</a>
+                <Link to="/manager" className="nav-link">Manager Panel</Link>
               </li>
             )}
             {isUser() && (
