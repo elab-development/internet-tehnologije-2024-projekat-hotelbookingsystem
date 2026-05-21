@@ -15,7 +15,7 @@ function HotelsPage() {
   const [weatherError, setWeatherError] = useState({})
   const [searchTerm, setSearchTerm] = useState('')
   const [exportMessage, setExportMessage] = useState('')
-  const perPage = 2
+  const perPage = 3
 
   const filteredHotels = hotels.filter(hotel => {
     const search = searchTerm.toLowerCase()
