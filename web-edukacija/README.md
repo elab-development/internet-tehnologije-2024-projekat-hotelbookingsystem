@@ -65,6 +65,60 @@ npm install
 npm run dev
 ```
 
+## Pokretanje aplikacije
+
+Pre pokretanja aplikacije potrebno je pokrenuti MySQL servis kroz XAMPP klikom na dugme **Start** pored MySQL servisa.
+
+### Pokretanje backend dela aplikacije
+
+U Command Prompt terminalu potrebno je pozicionirati se u glavni folder projekta i pokrenuti Laravel server:
+
+```bash
+cd C:\Users\Hp\gitRepoTask\internet-tehnologije-2024-projekat-hotelbookingsystem\web-edukacija
+php artisan serve --host=127.0.0.1 --port=8000
+```
+
+Backend aplikacija biće dostupna na adresi:
+
+```txt
+http://127.0.0.1:8000
+```
+
+### Pokretanje frontend dela aplikacije
+
+Frontend deo aplikacije pokreće se u Git Bash terminalu:
+
+```bash
+cd /c/Users/Hp/gitRepoTask/internet-tehnologije-2024-projekat-hotelbookingsystem/web-edukacija/frontend
+npm run dev
+```
+
+Frontend aplikacija biće dostupna na adresi:
+
+```txt
+http://localhost:3000
+```
+
+### Ubacivanje test podataka
+
+Ako je potrebno ubaciti test podatke, odnosno demo admin i manager naloge, koristi se sledeća komanda u Command Prompt-u:
+
+```bash
+cd C:\Users\Hp\gitRepoTask\internet-tehnologije-2024-projekat-hotelbookingsystem\web-edukacija
+php artisan migrate:fresh --seed
+```
+
+Nakon seedovanja ponovo se pokreću backend i frontend deo aplikacije:
+
+```bash
+php artisan serve --host=127.0.0.1 --port=8000
+```
+
+```bash
+cd /c/Users/Hp/gitRepoTask/internet-tehnologije-2024-projekat-hotelbookingsystem/web-edukacija/frontend
+npm run dev
+```
+
 ## Demo accounts
 
 ### Admin
@@ -77,4 +131,3 @@ npm run dev
 - **Email:** manager@gmail.com
 - **Password:** manager123
 
-This project was developed as a seminar project for Internet Technologies.
